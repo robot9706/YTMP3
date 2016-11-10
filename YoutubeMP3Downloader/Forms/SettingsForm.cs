@@ -8,6 +8,23 @@ namespace YoutubeMP3Downloader
 {
     public partial class SettingsForm : MetroForm
     {
+        class ComboBoxItem<T>
+        {
+            public string Name;
+            public T Value;
+
+            public ComboBoxItem(T value, string name)
+            {
+                Value = value;
+                Name = name;
+            }
+
+            public override string ToString()
+            {
+                return Name;
+            }
+        }
+
         public SettingsForm()
         {
             InitializeComponent();
@@ -29,7 +46,7 @@ namespace YoutubeMP3Downloader
                 if (s == MetroColorStyle.Default)
                     continue;
 
-                cbColor.Items.Add(s);
+                cbColor.Items.Add(new ComboBoxItem<MetroColorStyle>(s, LanguageManager.GetLocalization("colorStyle_" + s.ToString())));
 
                 if(selectedColorStlye == s)
                 {
@@ -47,7 +64,7 @@ namespace YoutubeMP3Downloader
                 if (t == MetroThemeStyle.Default)
                     continue;
 
-                cbStyle.Items.Add(t);
+                cbStyle.Items.Add(new ComboBoxItem<MetroThemeStyle>(t, LanguageManager.GetLocalization("themeStyle_" + t.ToString())));
 
                 if(t == selectedTheme)
                 {
@@ -81,8 +98,8 @@ namespace YoutubeMP3Downloader
             if (cbColor.SelectedItem == null || cbStyle.SelectedItem == null)
                 return;
 
-            MetroColorStyle color = (MetroColorStyle)cbColor.SelectedItem;
-            MetroThemeStyle theme = (MetroThemeStyle)cbStyle.SelectedItem;
+            MetroColorStyle color = ((ComboBoxItem<MetroColorStyle>)cbColor.SelectedItem).Value;
+            MetroThemeStyle theme = ((ComboBoxItem<MetroThemeStyle>)cbStyle.SelectedItem).Value;
 
             SettingsFile set = Settings.AppSettings;
             set.AppColorStyle = color.ToString();
@@ -102,6 +119,20 @@ namespace YoutubeMP3Downloader
             LanguageManager.ApplyLanguage(this);
 
             Settings.AppSettings.Language = lang.LocaleName;
+
+            foreach(ComboBoxItem<MetroColorStyle> i in cbColor.Items)
+            {
+                i.Name = LanguageManager.GetLocalization("colorStyle_" + i.Value.ToString());
+            }
+            cbColor.SelectedText = ((ComboBoxItem<MetroColorStyle>)cbColor.SelectedItem).Name;
+
+            foreach (ComboBoxItem<MetroThemeStyle> i in cbStyle.Items)
+            {
+                i.Name = LanguageManager.GetLocalization("themeStyle_" + i.Value.ToString());
+            }
+
+            cbColor.Refresh();
+            cbStyle.Refresh();
         }
 
         private void btnSave_Click(object sender, EventArgs e)

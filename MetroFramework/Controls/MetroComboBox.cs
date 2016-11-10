@@ -351,7 +351,9 @@ namespace MetroFramework.Controls
 
             Rectangle textRect = new Rectangle(2, 2, Width - 20, Height - 4);
 
-            TextRenderer.DrawText(e.Graphics, Text, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), textRect, foreColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
+            //TextRenderer.DrawText(e.Graphics, Text, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), textRect, foreColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
+            if (SelectedItem != null)
+                TextRenderer.DrawText(e.Graphics, SelectedItem.ToString(), MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), textRect, foreColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
 
             OnCustomPaintForeground(new MetroPaintEventArgs(Color.Empty, foreColor, e.Graphics));
 
