@@ -37,6 +37,8 @@
             this.cbQuality = new MetroFramework.Controls.MetroComboBox();
             this.btnDownload = new MetroFramework.Controls.MetroButton();
             this.tip = new System.Windows.Forms.ToolTip(this.components);
+            this.tbEncode = new MetroFramework.Controls.MetroToggle();
+            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,11 +131,35 @@
             // 
             this.tip.IsBalloon = true;
             // 
+            // tbEncode
+            // 
+            this.tbEncode.AutoSize = true;
+            this.tbEncode.Checked = true;
+            this.tbEncode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tbEncode.Location = new System.Drawing.Point(324, 177);
+            this.tbEncode.Name = "tbEncode";
+            this.tbEncode.Size = new System.Drawing.Size(80, 17);
+            this.tbEncode.TabIndex = 6;
+            this.tbEncode.Text = "On";
+            this.tbEncode.UseSelectable = true;
+            // 
+            // metroLabel3
+            // 
+            this.metroLabel3.Location = new System.Drawing.Point(194, 174);
+            this.metroLabel3.Name = "metroLabel3";
+            this.metroLabel3.Size = new System.Drawing.Size(124, 23);
+            this.metroLabel3.TabIndex = 7;
+            this.metroLabel3.Tag = "[encToMp3]";
+            this.metroLabel3.Text = "Encode to mp3:";
+            this.metroLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // NewDownloadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(626, 240);
+            this.Controls.Add(this.metroLabel3);
+            this.Controls.Add(this.tbEncode);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.cbQuality);
             this.Controls.Add(this.metroLabel2);
@@ -148,6 +174,7 @@
             this.Enter += new System.EventHandler(this.NewDownloadForm_Enter);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -160,5 +187,7 @@
         private MetroFramework.Controls.MetroComboBox cbQuality;
         private MetroFramework.Controls.MetroButton btnDownload;
         private System.Windows.Forms.ToolTip tip;
+        private MetroFramework.Controls.MetroLabel metroLabel3;
+        private MetroFramework.Controls.MetroToggle tbEncode;
     }
 }

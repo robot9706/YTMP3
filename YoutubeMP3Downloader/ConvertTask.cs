@@ -23,9 +23,11 @@ namespace YoutubeMP3Downloader
         private Task _task;
         private bool _cancelled = false;
 
+        private bool _encodeToMp3 = false;
+
         private Process _ffmpegProcess;
 
-        public ConvertTask(MetroLabel statusLabel, MetroProgressBar progBar, MetroButton cancelButton, VideoInfo video, string outputMp3)
+        public ConvertTask(MetroLabel statusLabel, MetroProgressBar progBar, MetroButton cancelButton, VideoInfo video, string outputMp3, bool encodeToMp3)
         {
             if (video.RequiresDecryption)
             {
@@ -37,6 +39,7 @@ namespace YoutubeMP3Downloader
             _cancelButton = cancelButton;
             _video = video;
             _outputMp3 = outputMp3;
+            _encodeToMp3 = encodeToMp3;
         }
 
         public void Start()
@@ -96,10 +99,19 @@ namespace YoutubeMP3Downloader
             if (_ffmpegProcess != null && !_ffmpegProcess.HasExited)
                 _ffmpegProcess.Kill();
         }
+        
+        private void OnCancel(string mp4)
+        {
+            if (!string.IsNullOrEmpty(mp4) && File.Exists(mp4))
+                File.Delete(mp4);
+            if (!string.IsNullOrEmpty(_outputMp3) && File.Exists(_outputMp3))
+                File.Delete(_outputMp3);
+        }
 
         private void DoTask()
         {
-            string mp4 = Path.Combine(Path.GetDirectoryName(_outputMp3), Utils.RemoveIllegalPathCharacters(_video.Title) + ".temp");
+            string mp4 = (_encodeToMp3 ? Path.Combine(Path.GetDirectoryName(_outputMp3), Utils.RemoveIllegalPathCharacters(_video.Title) + "." + Path.GetRandomFileName()) :
+                _outputMp3);
 
             try
             {
@@ -118,85 +130,87 @@ namespace YoutubeMP3Downloader
                     DisableCancelButton();
                     RemoveProgressBar();
 
+                    OnCancel(null);
+
                     return;
                 }
 
-                SetStatus("statusEncoding");
-
-                ProcessStartInfo ff = new ProcessStartInfo();
-                ff.FileName = Path.Combine(Application.StartupPath, "ffmpeg.exe");
-                ff.Arguments = "-y -i \"" + mp4 + "\" \"" + _outputMp3 + "\"";
-                ff.UseShellExecute = false;
-                ff.RedirectStandardError = true;
-                ff.RedirectStandardOutput = true;
-                ff.CreateNoWindow = true;
-
-                Process ffmpeg = _ffmpegProcess = Process.Start(ff);
-
-                bool? inputData = null;
-                double mp4Length = 0;
-                while (!ffmpeg.HasExited)
+                if (_encodeToMp3)
                 {
-                    string line = null;
-                    if (!ffmpeg.StandardError.EndOfStream)
-                        line = ffmpeg.StandardError.ReadLine();
-                    else if (!ffmpeg.StandardOutput.EndOfStream)
-                        line = ffmpeg.StandardOutput.ReadLine();
-                    if (string.IsNullOrEmpty(line))
-                        continue;
+                    SetStatus("statusEncoding");
 
-                    if (line.StartsWith("Input #0"))
+                    ProcessStartInfo ff = new ProcessStartInfo();
+                    ff.FileName = Path.Combine(Application.StartupPath, "ffmpeg.exe");
+                    ff.Arguments = "-y -i \"" + mp4 + "\" \"" + _outputMp3 + "\"";
+                    ff.UseShellExecute = false;
+                    ff.RedirectStandardError = true;
+                    ff.RedirectStandardOutput = true;
+                    ff.CreateNoWindow = true;
+
+                    Process ffmpeg = _ffmpegProcess = Process.Start(ff);
+
+                    bool? inputData = null;
+                    double mp4Length = 0;
+                    while (!ffmpeg.HasExited)
                     {
-                        inputData = true;
+                        string line = null;
+                        if (!ffmpeg.StandardError.EndOfStream)
+                            line = ffmpeg.StandardError.ReadLine();
+                        else if (!ffmpeg.StandardOutput.EndOfStream)
+                            line = ffmpeg.StandardOutput.ReadLine();
+                        if (string.IsNullOrEmpty(line))
+                            continue;
+
+                        if (line.StartsWith("Input #0"))
+                        {
+                            inputData = true;
+                        }
+                        else if (line.StartsWith("Output #0"))
+                        {
+                            inputData = false;
+                        }
+                        else if (line.ToLower().Contains("duration") && inputData.HasValue && inputData.Value)
+                        {
+                            int s = line.IndexOf(": ");
+                            int e = line.IndexOf(",", s);
+
+                            string sub = line.Substring(s + 2, e - s - 2);
+
+                            mp4Length = TimeSpan.Parse(sub).TotalSeconds;
+                        }
+
+                        if (line.StartsWith("size="))
+                        {
+                            int s = line.IndexOf("time=");
+                            int e = line.IndexOf(" bitrate", s + 5);
+
+                            string sub = line.Substring(s + 5, e - s - 5);
+
+                            double time = TimeSpan.Parse(sub).TotalSeconds;
+                            double state = (time / mp4Length) * 100;
+                            if (state > 100)
+                                state = 100;
+
+                            SetProgress((int)state);
+                        }
+
+                        if (_cancelled)
+                        {
+                            ffmpeg.Kill();
+
+                            OnCancel(mp4);
+
+                            SetStatus("cancelled");
+                            DisableCancelButton();
+                            RemoveProgressBar();
+
+                            return;
+                        }
                     }
-                    else if (line.StartsWith("Output #0"))
-                    {
-                        inputData = false;
-                    }
-                    else if (line.ToLower().Contains("duration") && inputData.HasValue && inputData.Value)
-                    {
-                        int s = line.IndexOf(": ");
-                        int e = line.IndexOf(",", s);
 
-                        string sub = line.Substring(s + 2, e - s - 2);
-
-                        mp4Length = TimeSpan.Parse(sub).TotalSeconds;
-                    }
-
-                    if (line.StartsWith("size="))
-                    {
-                        int s = line.IndexOf("time=");
-                        int e = line.IndexOf(" bitrate", s + 5);
-
-                        string sub = line.Substring(s + 5, e - s - 5);
-
-                        double time = TimeSpan.Parse(sub).TotalSeconds;
-                        double state = (time / mp4Length) * 100;
-                        if (state > 100)
-                            state = 100;
-
-                        SetProgress((int)state);
-                    }
-
-                    if (_cancelled)
-                    {
-                        ffmpeg.Kill();
-
-                        if (File.Exists(mp4))
-                            File.Delete(mp4);
-                        if (File.Exists(_outputMp3))
-                            File.Delete(_outputMp3);
-
-                        SetStatus("cancelled");
-                        DisableCancelButton();
-                        RemoveProgressBar();
-
-                        return;
-                    }
+                    if (File.Exists(mp4))
+                        File.Delete(mp4);
                 }
-
-                if (File.Exists(mp4))
-                    File.Delete(mp4);
 
                 SetStatus("done");
             }

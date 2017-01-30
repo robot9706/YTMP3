@@ -98,7 +98,7 @@
             this.listTasks.RowCount = 2;
             this.listTasks.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.listTasks.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.listTasks.Size = new System.Drawing.Size(736, 329);
+            this.listTasks.Size = new System.Drawing.Size(882, 329);
             this.listTasks.TabIndex = 2;
             // 
             // metroLabel5
@@ -106,9 +106,9 @@
             this.metroLabel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel5.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel5.Location = new System.Drawing.Point(499, 1);
+            this.metroLabel5.Location = new System.Drawing.Point(598, 1);
             this.metroLabel5.Name = "metroLabel5";
-            this.metroLabel5.Size = new System.Drawing.Size(158, 23);
+            this.metroLabel5.Size = new System.Drawing.Size(191, 23);
             this.metroLabel5.TabIndex = 3;
             this.metroLabel5.Tag = "[vFile]";
             this.metroLabel5.Text = "File:";
@@ -119,9 +119,9 @@
             this.metroLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel4.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel4.Location = new System.Drawing.Point(334, 1);
+            this.metroLabel4.Location = new System.Drawing.Point(400, 1);
             this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(158, 23);
+            this.metroLabel4.Size = new System.Drawing.Size(191, 23);
             this.metroLabel4.TabIndex = 2;
             this.metroLabel4.Tag = "[vProgress]";
             this.metroLabel4.Text = "Progress:";
@@ -132,9 +132,9 @@
             this.metroLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel3.Location = new System.Drawing.Point(169, 1);
+            this.metroLabel3.Location = new System.Drawing.Point(202, 1);
             this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(158, 23);
+            this.metroLabel3.Size = new System.Drawing.Size(191, 23);
             this.metroLabel3.TabIndex = 1;
             this.metroLabel3.Tag = "[vStatus]";
             this.metroLabel3.Text = "Status:";
@@ -147,7 +147,7 @@
             this.metroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Bold;
             this.metroLabel2.Location = new System.Drawing.Point(4, 1);
             this.metroLabel2.Name = "metroLabel2";
-            this.metroLabel2.Size = new System.Drawing.Size(158, 23);
+            this.metroLabel2.Size = new System.Drawing.Size(191, 23);
             this.metroLabel2.TabIndex = 0;
             this.metroLabel2.Tag = "[vTitle]";
             this.metroLabel2.Text = "Title:";
@@ -158,9 +158,9 @@
             this.metroLabel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel6.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel6.Location = new System.Drawing.Point(664, 1);
+            this.metroLabel6.Location = new System.Drawing.Point(796, 1);
             this.metroLabel6.Name = "metroLabel6";
-            this.metroLabel6.Size = new System.Drawing.Size(68, 19);
+            this.metroLabel6.Size = new System.Drawing.Size(82, 19);
             this.metroLabel6.TabIndex = 4;
             this.metroLabel6.Tag = "[cancel]";
             this.metroLabel6.Text = "Cancel";
@@ -169,7 +169,7 @@
             // btnDownload
             // 
             this.btnDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDownload.Location = new System.Drawing.Point(659, 442);
+            this.btnDownload.Location = new System.Drawing.Point(805, 442);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(119, 38);
             this.btnDownload.TabIndex = 3;
@@ -182,7 +182,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(828, 511);
+            this.ClientSize = new System.Drawing.Size(974, 511);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.listTasks);
             this.Controls.Add(this.metroLabel1);

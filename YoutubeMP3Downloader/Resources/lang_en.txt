@@ -41,3 +41,4 @@ colorStyle_Red=Red
 colorStyle_Yellow=Yellow
 themeStyle_Light=Light
 themeStyle_Dark=Dark
+encToMp3=Encode to MP3:

@@ -47,9 +47,18 @@ namespace YoutubeMP3Downloader
                     VideoInfo yt = nd.SelectedVideo;
 
                     SaveFileDialog svf = new SaveFileDialog();
-                    svf.Filter = "MP3 (*.mp3)|*.mp3|" + LanguageManager.GetLocalization("allFiles") + " (*.*)|*.*";
                     svf.InitialDirectory = Settings.AppSettings.DownloadFolder;
-                    svf.FileName = Utils.RemoveIllegalPathCharacters(yt.Title) + ".mp3";
+
+                    if (nd.EncodeToMp3)
+                    {
+                        svf.Filter = "MP3 (*.mp3)|*.mp3|" + LanguageManager.GetLocalization("allFiles") + " (*.*)|*.*";
+                        svf.FileName = Utils.RemoveIllegalPathCharacters(yt.Title) + ".mp3";
+                    }
+                    else
+                    {
+                        svf.Filter = "MP3 (*.mp4)|*.mp4|" + LanguageManager.GetLocalization("allFiles") + " (*.*)|*.*";
+                        svf.FileName = Utils.RemoveIllegalPathCharacters(yt.Title) + ".mp4";
+                    }
 
                     if (svf.ShowDialog() == DialogResult.OK)
                     {
@@ -82,7 +91,7 @@ namespace YoutubeMP3Downloader
                         listTasks.Controls.Add(file, 3, listTasks.RowCount - 1);
                         listTasks.Controls.Add(cancelButton, 4, listTasks.RowCount - 1);
 
-                        ConvertTask task = new ConvertTask(status, progBar, cancelButton, yt, svf.FileName);
+                        ConvertTask task = new ConvertTask(status, progBar, cancelButton, yt, svf.FileName, nd.EncodeToMp3);
                         cancelButton.Click += delegate (object s, System.EventArgs se)
                         {
                             task.Cancel();

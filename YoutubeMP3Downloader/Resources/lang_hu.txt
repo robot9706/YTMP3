@@ -41,3 +41,4 @@ colorStyle_Red=Piros
 colorStyle_Yellow=Sárga
 themeStyle_Light=Világos
 themeStyle_Dark=Sötét
+encToMp3=Kódolás MP3-ba:

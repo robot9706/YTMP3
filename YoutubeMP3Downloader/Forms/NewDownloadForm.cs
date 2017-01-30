@@ -28,6 +28,12 @@ namespace YoutubeMP3Downloader
             private set;
         }
 
+        public bool EncodeToMp3
+        {
+            get;
+            private set;
+        }
+
         public NewDownloadForm()
         {
             InitializeComponent();
@@ -103,6 +109,7 @@ namespace YoutubeMP3Downloader
         {
             DialogResult = DialogResult.OK;
 
+            EncodeToMp3 = tbEncode.Checked;
             SelectedVideo = ((QualityElement)cbQuality.SelectedItem).YTInfo;
         }
 
