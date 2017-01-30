@@ -7,4 +7,4 @@
 
 [FFmpeg](https://www.ffmpeg.org/)
 
-#[Download](https://github.com/robot9706/YTMP3/releases/download/1.0/YTMP3.zip)
+#[Download](https://github.com/robot9706/YTMP3/releases/download/v1.1/YTMP3.zip)
